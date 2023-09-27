@@ -6,9 +6,12 @@ public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager Instance { get; private set; }
     public GameObject player;
-    InputManager inputManager;
-    PlayerLocomotion playerLocomotion;
+    public Rigidbody rigidbody;
+    public InputManager inputManager;
+    public PlayerLocomotion playerLocomotion;
+    [Range(0, 50)]
     public float movementSpeed;
+    [Range(0, 50)]
     public float rotationSpeed;
 
     private void Awake()
@@ -23,6 +26,7 @@ public class PlayerManager : MonoBehaviour
         }
         inputManager = player.GetComponent<InputManager>();
         playerLocomotion = player.GetComponent<PlayerLocomotion>();
+        rigidbody = player.GetComponent<Rigidbody>();
     }
     private void Update()
     {
