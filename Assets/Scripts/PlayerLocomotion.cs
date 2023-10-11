@@ -28,7 +28,7 @@ public class PlayerLocomotion : MonoBehaviour
         moveDirection.y = 0;
         moveDirection *= PlayerManager.Instance.movementSpeed;
         Vector3 movementVelocity = moveDirection;
-        PlayerManager.Instance.rigidbody.velocity = movementVelocity;
+        PlayerManager.Instance.playerrigidbody.velocity = movementVelocity;
     }
     
     private void HandleRotation()
@@ -38,6 +38,10 @@ public class PlayerLocomotion : MonoBehaviour
         targetDirection = targetDirection + cameraObject.right * PlayerManager.Instance.inputManager.horizontalInput;
         targetDirection.Normalize();
         targetDirection.y = 0;
+        if (targetDirection == Vector3.zero)
+        {
+            targetDirection = transform.forward;
+        }
 
         Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
         Quaternion playerRotation = Quaternion.Slerp(transform.rotation, targetRotation, PlayerManager.Instance.rotationSpeed);

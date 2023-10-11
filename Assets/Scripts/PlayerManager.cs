@@ -5,10 +5,15 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager Instance { get; private set; }
+    [Header("Components")]
     public GameObject player;
-    public Rigidbody rigidbody;
+    public Rigidbody playerrigidbody;
+    public Animator playerAnim;
+    [Header("PlayerScripts")]
     public InputManager inputManager;
     public PlayerLocomotion playerLocomotion;
+    public PlayerAnimation playerAnimation;
+    [Header("Stats")]
     [Range(0, 50)]
     public float movementSpeed;
     [Range(0, 50)]
@@ -26,7 +31,9 @@ public class PlayerManager : MonoBehaviour
         }
         inputManager = player.GetComponent<InputManager>();
         playerLocomotion = player.GetComponent<PlayerLocomotion>();
-        rigidbody = player.GetComponent<Rigidbody>();
+        playerrigidbody = player.GetComponent<Rigidbody>();
+        playerAnimation = player.GetComponent<PlayerAnimation>(); 
+        playerAnim = player.GetComponentInChildren<Animator>();
     }
     private void Update()
     {
