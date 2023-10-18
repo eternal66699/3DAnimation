@@ -149,6 +149,94 @@ public partial class @Player_Controls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Player_Action"",
+            ""id"": ""67d9f84b-6607-4bb0-92a4-d6532aa15ea4"",
+            ""actions"": [
+                {
+                    ""name"": ""Sprint"",
+                    ""type"": ""Button"",
+                    ""id"": ""04495e99-361a-43ac-bb5b-f1abd0b946a7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""215d9707-92e7-4103-a59a-e1247da6a3ee"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Prone"",
+                    ""type"": ""Button"",
+                    ""id"": ""4b67a8b5-679b-43ec-b510-ffc3a47f8848"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Walk"",
+                    ""type"": ""Button"",
+                    ""id"": ""ebd2b547-b588-4f66-8401-28f5b97ed2aa"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""0d4f25ef-e254-4388-b3dc-676467fad161"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d8824f40-a045-4495-b56c-948b8cce1d05"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2bc65537-92a4-4186-9d24-31645604772b"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Prone"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c10d9111-86ce-47a4-bd0e-48b88b4d768d"",
+                    ""path"": ""<Keyboard>/alt"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Walk"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -156,6 +244,12 @@ public partial class @Player_Controls: IInputActionCollection2, IDisposable
         // Player_Movement
         m_Player_Movement = asset.FindActionMap("Player_Movement", throwIfNotFound: true);
         m_Player_Movement_Movement = m_Player_Movement.FindAction("Movement", throwIfNotFound: true);
+        // Player_Action
+        m_Player_Action = asset.FindActionMap("Player_Action", throwIfNotFound: true);
+        m_Player_Action_Sprint = m_Player_Action.FindAction("Sprint", throwIfNotFound: true);
+        m_Player_Action_Jump = m_Player_Action.FindAction("Jump", throwIfNotFound: true);
+        m_Player_Action_Prone = m_Player_Action.FindAction("Prone", throwIfNotFound: true);
+        m_Player_Action_Walk = m_Player_Action.FindAction("Walk", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -259,8 +353,85 @@ public partial class @Player_Controls: IInputActionCollection2, IDisposable
         }
     }
     public Player_MovementActions @Player_Movement => new Player_MovementActions(this);
+
+    // Player_Action
+    private readonly InputActionMap m_Player_Action;
+    private List<IPlayer_ActionActions> m_Player_ActionActionsCallbackInterfaces = new List<IPlayer_ActionActions>();
+    private readonly InputAction m_Player_Action_Sprint;
+    private readonly InputAction m_Player_Action_Jump;
+    private readonly InputAction m_Player_Action_Prone;
+    private readonly InputAction m_Player_Action_Walk;
+    public struct Player_ActionActions
+    {
+        private @Player_Controls m_Wrapper;
+        public Player_ActionActions(@Player_Controls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Sprint => m_Wrapper.m_Player_Action_Sprint;
+        public InputAction @Jump => m_Wrapper.m_Player_Action_Jump;
+        public InputAction @Prone => m_Wrapper.m_Player_Action_Prone;
+        public InputAction @Walk => m_Wrapper.m_Player_Action_Walk;
+        public InputActionMap Get() { return m_Wrapper.m_Player_Action; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(Player_ActionActions set) { return set.Get(); }
+        public void AddCallbacks(IPlayer_ActionActions instance)
+        {
+            if (instance == null || m_Wrapper.m_Player_ActionActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_Player_ActionActionsCallbackInterfaces.Add(instance);
+            @Sprint.started += instance.OnSprint;
+            @Sprint.performed += instance.OnSprint;
+            @Sprint.canceled += instance.OnSprint;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
+            @Prone.started += instance.OnProne;
+            @Prone.performed += instance.OnProne;
+            @Prone.canceled += instance.OnProne;
+            @Walk.started += instance.OnWalk;
+            @Walk.performed += instance.OnWalk;
+            @Walk.canceled += instance.OnWalk;
+        }
+
+        private void UnregisterCallbacks(IPlayer_ActionActions instance)
+        {
+            @Sprint.started -= instance.OnSprint;
+            @Sprint.performed -= instance.OnSprint;
+            @Sprint.canceled -= instance.OnSprint;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
+            @Prone.started -= instance.OnProne;
+            @Prone.performed -= instance.OnProne;
+            @Prone.canceled -= instance.OnProne;
+            @Walk.started -= instance.OnWalk;
+            @Walk.performed -= instance.OnWalk;
+            @Walk.canceled -= instance.OnWalk;
+        }
+
+        public void RemoveCallbacks(IPlayer_ActionActions instance)
+        {
+            if (m_Wrapper.m_Player_ActionActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IPlayer_ActionActions instance)
+        {
+            foreach (var item in m_Wrapper.m_Player_ActionActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_Player_ActionActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public Player_ActionActions @Player_Action => new Player_ActionActions(this);
     public interface IPlayer_MovementActions
     {
         void OnMovement(InputAction.CallbackContext context);
+    }
+    public interface IPlayer_ActionActions
+    {
+        void OnSprint(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
+        void OnProne(InputAction.CallbackContext context);
+        void OnWalk(InputAction.CallbackContext context);
     }
 }
