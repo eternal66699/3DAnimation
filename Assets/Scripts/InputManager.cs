@@ -10,6 +10,7 @@ public class InputManager : MonoBehaviour
     public float horizontalInput;
     public float moveAmount;
     public bool sprint_Input;
+    public bool walk_Input;
 
     private void OnEnable()
     {
@@ -19,6 +20,9 @@ public class InputManager : MonoBehaviour
             playerControls.Player_Movement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
             playerControls.Player_Action.Sprint.performed += i => sprint_Input = true;
             playerControls.Player_Action.Sprint.canceled += i => sprint_Input = false;
+
+            playerControls.Player_Action.Walk.performed += i => walk_Input = true;
+            playerControls.Player_Action.Walk.canceled += i => walk_Input = false;
         }
         playerControls.Enable();
     }
@@ -31,7 +35,8 @@ public class InputManager : MonoBehaviour
     public void HandleAllInput()
     {
         HandleMovementInput();
-        HandleSprinting();
+        HandleSprinting(); HandleWalking();
+
     }
 
     private void HandleMovementInput()
@@ -51,6 +56,18 @@ public class InputManager : MonoBehaviour
         else
         {
             PlayerManager.Instance.isSprinting = false;
+        }
+    }
+
+    private void HandleWalking()
+    {
+        if (walk_Input)
+        {
+            PlayerManager.Instance.isWalking = true;
+        }
+        else
+        {
+            PlayerManager.Instance.isWalking = false;
         }
     }
 }

@@ -432,7 +432,7 @@ MonoBehaviour:
   movementSpeed: 10
   rotationSpeed: 0.25
   sprintSpeed: 10
-  walkSpeed: 0
+  walkSpeed: 5
   isSprinting: 0
   isWalking: 0
   isJumping: 0
@@ -688,7 +688,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
@@ -733,6 +733,7 @@ MonoBehaviour:
   horizontalInput: 0
   moveAmount: 0
   sprint_Input: 0
+  walk_Input: 0
 --- !u!1001 &1699115762
 PrefabInstance:
   m_ObjectHideFlags: 0

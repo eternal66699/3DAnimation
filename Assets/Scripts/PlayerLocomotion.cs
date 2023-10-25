@@ -30,6 +30,10 @@ public class PlayerLocomotion : MonoBehaviour
         {
             moveDirection *= PlayerManager.Instance.sprintSpeed;
         }
+        else if (PlayerManager.Instance.isWalking)
+        {
+            moveDirection *= PlayerManager.Instance.walkSpeed;
+        }
         else
         {
             moveDirection *= PlayerManager.Instance.movementSpeed;

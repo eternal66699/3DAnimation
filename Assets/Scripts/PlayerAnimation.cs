@@ -16,7 +16,11 @@ public class PlayerAnimation : MonoBehaviour
     {
         if (PlayerManager.Instance.isSprinting)
         {
-            horizontalMovement = 2;
+            verticalMovement = 2;
+        }
+        if (PlayerManager.Instance.isWalking)
+        {
+            verticalMovement = 0.5f;
         }
         PlayerManager.Instance.playerAnim.SetFloat(horizontal, horizontalMovement, 0.1f, Time.deltaTime);
         PlayerManager.Instance.playerAnim.SetFloat(vertical, verticalMovement, 0.1f, Time.deltaTime);
